@@ -1,1 +1,5 @@
+# 3D_designs files
 *.FCBak
+
+# folder to keep components under review, make sure to compress them to rar format
+unsorted/*
