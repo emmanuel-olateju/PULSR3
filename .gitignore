@@ -7,6 +7,6 @@
 unsorted/*
 
 #GUI design/C# project files
-C\#_GUI/PULSR_3/bin/*
-C\#_GUI/PULSR_3/obj/*
-C\#_GUI/PULSR_3/.vs/*
+C#_GUI/PULSR_3/bin/
+C#_GUI/PULSR_3/obj/
+C#_GUI/PULSR_3/.vs/
