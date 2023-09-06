@@ -1,1 +1,12 @@
+# 3D_designs files
 *.FCBak
+*.stl
+*.gcode
+
+# folder to keep components under review, make sure to compress them to rar format
+unsorted/*
+
+#GUI design/C# project files
+C#_GUI/PULSR_3/bin/
+C#_GUI/PULSR_3/obj/
+C#_GUI/PULSR_3/.vs/

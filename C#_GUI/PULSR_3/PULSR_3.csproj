@@ -66,6 +66,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -79,6 +80,42 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Cancelblack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Cancelred.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\expand_3278551.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hoverButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-macos-close-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\IdleButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\minimize_9471843.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\orbitalPanel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\panel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\profile_3135715.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PULSR header.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\separator.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
