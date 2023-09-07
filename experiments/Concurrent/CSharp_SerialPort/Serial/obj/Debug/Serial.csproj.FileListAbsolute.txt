@@ -1,0 +1,11 @@
+C:\Users\DELL\Desktop\CSharp_SerialPort\Serial\bin\Debug\Serial.exe.config
+C:\Users\DELL\Desktop\CSharp_SerialPort\Serial\bin\Debug\Serial.exe
+C:\Users\DELL\Desktop\CSharp_SerialPort\Serial\bin\Debug\Serial.pdb
+C:\Users\DELL\Desktop\CSharp_SerialPort\Serial\obj\Debug\Serial.csproj.AssemblyReference.cache
+C:\Users\DELL\Desktop\CSharp_SerialPort\Serial\obj\Debug\Serial.csproj.SuggestedBindingRedirects.cache
+C:\Users\DELL\Desktop\CSharp_SerialPort\Serial\obj\Debug\Serial.MainForm.resources
+C:\Users\DELL\Desktop\CSharp_SerialPort\Serial\obj\Debug\Serial.Properties.Resources.resources
+C:\Users\DELL\Desktop\CSharp_SerialPort\Serial\obj\Debug\Serial.csproj.GenerateResource.cache
+C:\Users\DELL\Desktop\CSharp_SerialPort\Serial\obj\Debug\Serial.csproj.CoreCompileInputs.cache
+C:\Users\DELL\Desktop\CSharp_SerialPort\Serial\obj\Debug\Serial.exe
+C:\Users\DELL\Desktop\CSharp_SerialPort\Serial\obj\Debug\Serial.pdb
