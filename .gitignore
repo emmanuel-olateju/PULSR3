@@ -1,3 +1,6 @@
+#VSCode temps
+.vs/
+
 # 3D_designs files
 *.FCBak
 *.stl
