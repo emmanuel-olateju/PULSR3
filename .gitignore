@@ -10,3 +10,8 @@ unsorted/*
 C#_GUI/PULSR_3/bin/
 C#_GUI/PULSR_3/obj/
 C#_GUI/PULSR_3/.vs/
+
+#SERIAL Port file 
+CSharp_SerialPort/bin
+CSharp_SerialPort/obj
+CSharp_SerialPort/.vs
