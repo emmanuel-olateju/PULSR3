@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -13,6 +14,16 @@ namespace PULSR_3
 {
     public partial class Form1 : Form
     {
+        pulsr pulsr3 = new pulsr();
+
+
+        public int old_y;
+        public int old_x;
+        public int new_y;
+        public int new_x;
+        public int yOffset = 0;
+        public int xOffset = 17;
+
         int levelStart = 0;
         int cycle = 0;
         int score = 0;
@@ -30,7 +41,34 @@ namespace PULSR_3
         private int cycleCount = 0;
         public Form1()
         {
-            InitializeComponent();
+            pulsr3.InitializeCommunication();
+            Thread.Sleep(500);
+            if (pulsr3.CheckCommunication())
+            {
+                Console.WriteLine("Communication Port is Active");
+
+                InitializeComponent();
+            }
+            else
+            {
+                Console.WriteLine("Communication Port Not Active");
+                Close();
+            }
+
+            //RESET ANGLE PARAMETERS AND DISABLE MOTORS
+            pulsr3.UpdateMotorSpeed(0, 0);
+            pulsr3.ResetAngles();
+
+            //PULSR KINEMATICS PARAMETERS DEFINITIION AND INITIALIZATION
+            pulsr3.DefineGeometry(26, 26, 26);
+            pulsr3.SetOrigin(20);
+
+            int[] new_yx = pulsr3.ReturnXYCoordinate();
+            old_y = new_yx[0];
+            old_x = new_yx[1];
+
+
+            //InitializeComponent();
             //panel12.Paint += panel12_Paint;
             //timer.Tick += timer_Tick;
             //timer.Start();
@@ -38,7 +76,7 @@ namespace PULSR_3
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            timer.Start();
+            //timer.Start();
 
             //this.KeyPreview = true;       // Enable keyevents for the move
             //this.KeyDown += keyisdown;   // Register the KeyDown event handler
@@ -193,15 +231,24 @@ namespace PULSR_3
             e.Graphics.FillEllipse(Brushes.Green, smallCircleXPos, smallCircleYPos, smallCircleDiameter, smallCircleDiameter);
 
             /// Display the coordinates in the terminal
-            //Console.WriteLine("Smaller Circle Coordinates: X = {0}, Y = {1}", smallCircleXPos, smallCircleYPos);
+            Console.WriteLine("Small Orbiting Circle Coordinates: X = {0}, Y = {1}", smallCircleXPos, smallCircleYPos);
 
-            /// Draw the small rectangle
-            //float rectWidth = 40;
-            //float rectHeight = 20;
-            //float rectX = centerX - rectWidth / 2;
+            ///// Draw the small rectangle connected to end effector  /////
+            float rectWidth = 20;
+            float rectHeight = 20;
+            float rectX = centerX - rectWidth / 2;
             //float rectY = centerY - orbitingCircleRadius - rectHeight;
             //e.Graphics.FillRectangle(Brushes.Blue, rectX, rectY, rectWidth, rectHeight);
-            //e.Graphics.FillRectangle(Brushes.Blue, rectX, rectY, 10, 10);
+            //e.Graphics.FillRectangle(Brushes.Blue, 57, 345, rectWidth, rectHeight);
+            /// update effector coordinate to give new effector coordinates ///
+            old_x = new_x;
+            old_y = new_y;
+            pulsr3.ReturnXYCoordinate();
+            new_x = xOffset - pulsr3.x;
+            new_y = pulsr3.y - yOffset;
+            e.Graphics.FillRectangle(Brushes.Blue, new_x, new_y, rectWidth, rectHeight);
+
+
         }
 
 
