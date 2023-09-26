@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PULSR_3;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 
 
@@ -42,7 +44,7 @@ namespace PULSR_3
         public Form1()
         {
             pulsr3.InitializeCommunication();
-            Thread.Sleep(500);
+            //Thread.Sleep(500);
             if (pulsr3.CheckCommunication())
             {
                 Console.WriteLine("Communication Port is Active");
@@ -51,7 +53,22 @@ namespace PULSR_3
             }
             else
             {
-                Console.WriteLine("Communication Port Not Active");
+                //Console.WriteLine("Communication Port Not Active");
+                //Close();
+
+                Console.WriteLine("Communication check failed for the following components:");
+                if (!pulsr3.load_cell_coms.IsOpen)
+                {
+                    Console.WriteLine(" - Load cell board not found");
+                }
+                if (!pulsr3.encoder_coms.IsOpen)
+                {
+                    Console.WriteLine(" - Encoder board not found");
+                }
+                if (!pulsr3.pulsr2_coms.IsOpen)
+                {
+                    Console.WriteLine(" - Pulsr communication check failed, restart system to reinitialize communication");
+                }
                 Close();
             }
 
@@ -68,6 +85,7 @@ namespace PULSR_3
             old_x = new_yx[1];
 
 
+
             //InitializeComponent();
             //panel12.Paint += panel12_Paint;
             //timer.Tick += timer_Tick;
@@ -76,7 +94,7 @@ namespace PULSR_3
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //timer.Start();
+            //timer.Start();    //commentend not to start when the form loads, the start button controls it now
 
             //this.KeyPreview = true;       // Enable keyevents for the move
             //this.KeyDown += keyisdown;   // Register the KeyDown event handler
@@ -121,7 +139,7 @@ namespace PULSR_3
         }
         private void minimizeButton(object sender, MouseEventArgs e)
         {
-            this.WindowState = FormWindowState.Normal ;
+            this.WindowState = FormWindowState.Normal;
         }
 
         //////// START Button //////
@@ -177,9 +195,9 @@ namespace PULSR_3
 
         private void increaseClick(object sender, MouseEventArgs e)
         {
-                
+
             button2.Text = Convert.ToString(levelStart += 100);
-            
+
 
         }
 
@@ -196,9 +214,9 @@ namespace PULSR_3
         {
             if (levelStart > 100)
             {
-                
+
                 button2.Text = Convert.ToString(levelStart -= 100);
-               
+
             }
         }
         ///////// Orbiting Circle /////////////
@@ -230,7 +248,7 @@ namespace PULSR_3
 
             e.Graphics.FillEllipse(Brushes.Green, smallCircleXPos, smallCircleYPos, smallCircleDiameter, smallCircleDiameter);
 
-            /// Display the coordinates in the terminal
+            /// Display the coordinates in the terminal ///
             Console.WriteLine("Small Orbiting Circle Coordinates: X = {0}, Y = {1}", smallCircleXPos, smallCircleYPos);
 
             ///// Draw the small rectangle connected to end effector  /////

@@ -52,9 +52,9 @@ namespace PULSR_3
         private int offset_angle;
         //private double ll, lu, le, e1, e2, xi, yi, x, y, offset_angle;
 
-        private SerialPort load_cell_coms;
-        private SerialPort encoder_coms;
-        private SerialPort pulsr2_coms;
+        public SerialPort load_cell_coms;
+        public SerialPort encoder_coms;
+        public SerialPort pulsr2_coms;
 
         private string load_port;
         private string enc_port;
@@ -219,7 +219,7 @@ namespace PULSR_3
                 pulsr2_coms.Write(new byte[] { (byte)Math.Abs(lower.target_speed) }, 0, 1);
 
 
-                Console.WriteLine();
+               
             }
         }
 
