@@ -71,6 +71,23 @@ namespace PULSR_3
                 }
                 Close();
             }
+            //// Game level selection ////
+            int value = 0;   /////key metric
+            if (InputBox("GAME LEVEL", "Select a Level!", ref value) == DialogResult.OK)
+            {
+                if (value == 0)
+                {
+                    MessageBox.Show("Passive Mode");
+                }
+                else if (value == 4)
+                {
+                    MessageBox.Show("Assistive Mode");
+                }
+                else if (value == 8)
+                {
+                    MessageBox.Show("Active Mode");
+                }
+            }
 
             //RESET ANGLE PARAMETERS AND DISABLE MOTORS
             pulsr3.UpdateMotorSpeed(0, 0);
@@ -270,5 +287,47 @@ namespace PULSR_3
         }
 
 
+        /// Dialog ///
+
+        public static DialogResult InputBox(string title, string promptText, ref int value)
+        {
+            Form form = new Form();
+            Label label = new Label();
+            TextBox textBox = new TextBox();
+            Button buttonOk = new Button();
+            Button buttonCancel = new Button();
+
+            form.Text = title;
+            label.Text = promptText;
+
+            buttonOk.Text = "OK";
+            buttonCancel.Text = "Cancel";
+            buttonOk.DialogResult = DialogResult.OK;
+            buttonCancel.DialogResult = DialogResult.Cancel;
+
+            label.SetBounds(60, 5, 100, 13);
+            textBox.SetBounds(75, 23, 50, 20);
+            buttonOk.SetBounds(25, 50, 70, 35);
+            buttonCancel.SetBounds(100, 50, 70, 35);
+
+            label.AutoSize = true;
+            form.ClientSize = new Size(200, 100);
+            form.FormBorderStyle = FormBorderStyle.FixedDialog;
+            form.StartPosition = FormStartPosition.CenterScreen;
+            form.MinimizeBox = false;
+            form.MaximizeBox = false;
+
+            form.Controls.AddRange(new Control[] { label, textBox, buttonOk, buttonCancel });
+            form.AcceptButton = buttonOk;
+            form.CancelButton = buttonCancel;
+
+            DialogResult dialogResult = form.ShowDialog();
+
+            value = Convert.ToInt32(textBox.Text);
+            return dialogResult;
+
+
+
+        }
     }
 }

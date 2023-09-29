@@ -32,9 +32,9 @@ namespace PULSR_3
     public class pulsr
     {
         public int control_data;
-        private string motor_data;
-        private int force_data;
-        private int wanted_load_cell;
+        public byte[] motor_data;
+        public byte[] force_data;
+        public int wanted_load_cell;
         private bool circleMode;
 
         public Motor upper;
@@ -56,9 +56,9 @@ namespace PULSR_3
         public SerialPort encoder_coms;
         public SerialPort pulsr2_coms;
 
-        private string load_port;
-        private string enc_port;
-        private string motor_port;
+        public string load_port;
+        public string enc_port;
+        public string motor_port;
 
         private const int baudrate = 2000000;
 
@@ -70,8 +70,8 @@ namespace PULSR_3
         public pulsr()
         {
             control_data = 0;
-            motor_data = "";
-            force_data = 0;
+            //motor_data = "";
+            //force_data = 0;
             wanted_load_cell = 0;
             circleMode = false;
 
@@ -139,7 +139,7 @@ namespace PULSR_3
                 }
             }
         }
-
+        // ///Commnunication Definitions/// //
         public void InitializeCommunication()
         {
             load_cell_coms = new SerialPort(load_port, baudrate);
@@ -219,7 +219,6 @@ namespace PULSR_3
                 pulsr2_coms.Write(new byte[] { (byte)Math.Abs(lower.target_speed) }, 0, 1);
 
 
-               
             }
         }
 
@@ -235,7 +234,7 @@ namespace PULSR_3
                 load_cell_coms.DiscardInBuffer();
                 load_cell_coms.DiscardOutBuffer();
                 load_cell_coms.Write(new byte[] { (byte)wanted_load_cell }, 0, 1);
-                byte[] force_data = new byte[4];
+                force_data = new byte[4];
                 load_cell_coms.Read(force_data, 0, 4);
             }
         }
@@ -252,7 +251,7 @@ namespace PULSR_3
                 encoder_coms.DiscardInBuffer();
                 encoder_coms.DiscardOutBuffer();
                 encoder_coms.Write(new byte[] { 0 }, 0, 1);
-                byte[] motor_data = new byte[5];
+                motor_data = new byte[5];
                 encoder_coms.Read(motor_data, 0, 5);
             }
         }
@@ -267,11 +266,11 @@ namespace PULSR_3
             else
             {
                 encoder_coms.Write(new byte[] { 255 }, 0, 1);
-                byte[] motor_data = new byte[5];
+                motor_data = new byte[5];
                 encoder_coms.Read(motor_data, 0, 5);
             }
         }
-
+        // /// Modes /// //
         public void ComputerMode()
         {
             control_data &= 63;
@@ -295,12 +294,11 @@ namespace PULSR_3
             control_data |= 64;
             SendCommand();
         }
-
+        /// /// PULSR Sensor Data Updates /// /// 
         public int UpdateUpperLoadCell()
         {
             wanted_load_cell = 1;
             UpdateLinkForce();
-            byte[] force_data = new byte[4];
             int h = (force_data[1] << 2) | (force_data[2] >> 3);
             int l = (force_data[2] << 5) | (force_data[3]);
             upper.link_force = (h << 8) + l;
@@ -311,7 +309,6 @@ namespace PULSR_3
         {
             wanted_load_cell = 2;
             UpdateLinkForce();
-            byte[] force_data = new byte[4];
             int h = (force_data[1] << 2) | (force_data[2] >> 3);
             int l = (force_data[2] << 5) | (force_data[3]);
             lower.link_force = (h << 8) + l;
@@ -333,11 +330,11 @@ namespace PULSR_3
             Console.WriteLine("angles: " + upper.angle + ", " + lower.angle);
             Console.WriteLine("force: " + upper.link_force + ", " + lower.link_force);
         }
-
+        // /// Motor Commands /// //
         public void SetMotorDirections(bool front, bool back, bool left, bool right)
         {
-            upper.target_speed = front ? Math.Abs(upper.target_speed) : -Math.Abs(upper.target_speed);
-            lower.target_speed = back ? Math.Abs(lower.target_speed) : -Math.Abs(lower.target_speed);
+            //upper.target_speed = front ? Math.Abs(upper.target_speed) : -Math.Abs(upper.target_speed);
+            //lower.target_speed = back ? Math.Abs(lower.target_speed) : -Math.Abs(lower.target_speed);
             this.front = front;
             this.back = back;
             this.left = left;
@@ -346,35 +343,35 @@ namespace PULSR_3
 
         public void EnableUpperMotor()
         {
-            control_data |= 2;
+            control_data |= 2;  //enable up motor
             SendCommand();
         }
 
         public void DisableUpperMotor()
         {
             upper.target_speed = 0;
-            control_data &= 125;
+            control_data &= 125;   //disable upper motor
             SendCommand();
         }
 
         public void EnableLowerMotor()
         {
-            control_data |= 8;
+            control_data |= 8;    //enable lower motor
             SendCommand();
         }
 
         public void DisableLowerMotor()
         {
             lower.target_speed = 0;
-            control_data &= 119;
+            control_data &= 119;   //disable lower motor
             SendCommand();
         }
 
         public void UpperMotorCW(int en_time, int speed)
         {
             upper.target_speed = Math.Abs(speed);
-            control_data |= 2;
-            control_data &= 123;
+            control_data |= 2;    //enable up motor
+            control_data &= 123;  //set upper motor to F direction	
             SendCommand();
             if (en_time != 0)
             {
@@ -386,8 +383,8 @@ namespace PULSR_3
         public void UpperMotorCCW(int en_time, int speed)
         {
             upper.target_speed = Math.Abs(speed);
-            control_data |= 2;
-            control_data |= 4;
+            control_data |= 2;  //enable up motor
+            control_data |= 4;  //set upper motor to R direction
             SendCommand();
             if (en_time != 0)
             {
@@ -399,8 +396,8 @@ namespace PULSR_3
         public void LowerMotorCW(int en_time, int speed)
         {
             lower.target_speed = Math.Abs(speed);
-            control_data |= 8;
-            control_data &= 111;
+            control_data |= 8;    //enable lower motor
+            control_data &= 111;  //set lower motor to F direction
             SendCommand();
             if (en_time != 0)
             {
@@ -412,8 +409,8 @@ namespace PULSR_3
         public void LowerMotorCCW(int en_time, int speed)
         {
             lower.target_speed = Math.Abs(speed);
-            control_data |= 8;
-            control_data |= 16;
+            control_data |= 8;   //enable lower motor
+            control_data |= 16;  //set lower motor to R direction
             SendCommand();
             if (en_time != 0)
             {
@@ -450,7 +447,7 @@ namespace PULSR_3
                 LowerMotorCCW(0, lower_target);
             }
         }
-
+        // /// Kinematics Definitions /// //
         public void DefineGeometry(int ll, int lu, int le)
         {
             this.ll = ll;
@@ -516,7 +513,7 @@ namespace PULSR_3
         /*public static void Main(string[] args)
         {
             pulsr neuro = new pulsr();
-            neuro.InitializeCommunication();
+            neuro.InitializeCommunication();    `
             Thread.Sleep(3000);
             Console.WriteLine("communication handshake successful");
             neuro.lower.angle = 109;
