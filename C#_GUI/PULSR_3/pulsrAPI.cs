@@ -31,26 +31,28 @@ namespace PULSR_3
 
     public class pulsr
     {
+        ///// INPUT VARIABLES AND COMMUNICATION DATA ///////
         public int control_data;
-        public byte[] motor_data;
-        public byte[] force_data;
+        public byte[] motor_data { get; set; }
+        public byte[] force_data { get; set; }
         public int wanted_load_cell;
         private bool circleMode;
 
+        ///// MOTOR INSTANCES  ///////
         public Motor upper;
         public Motor lower;
 
-        private int ll;
-        private int lu;
-        private int le;
-        private int e1;
-        private int e2;
-        private int xi;
-        private int yi;
+        ////// KINEMATICS PARAMETERS  ///////
+        public int ll;
+        public int lu;
+        public int le;
+        public int e1;
+        public int e2;
+        public int xi;
+        public int yi;
         public int x;
         public int y;
-        private int offset_angle;
-        //private double ll, lu, le, e1, e2, xi, yi, x, y, offset_angle;
+        public int offset_angle;
 
         public SerialPort load_cell_coms;
         public SerialPort encoder_coms;
@@ -78,6 +80,7 @@ namespace PULSR_3
             upper = new Motor();
             lower = new Motor();
 
+            ////// KINEMATICS PARAMETERS INITIALIZATION ///////
             ll = 0;
             lu = 0;
             le = 0;
@@ -89,7 +92,7 @@ namespace PULSR_3
             y = 0;
             offset_angle = 0;
 
-            // Read the USB serial numbers from a file
+            /// Read the USB serial numbers from a file ///
             string usbSerialNos;
             using (System.IO.StreamReader usbFile = new System.IO.StreamReader("usb_ser.txt"))
             {
@@ -139,7 +142,10 @@ namespace PULSR_3
                 }
             }
         }
-        // ///Commnunication Definitions/// //
+
+        /// <summary>
+        /// COMMUNICATION DEFINITIONS
+        /// </summary>
         public void InitializeCommunication()
         {
             load_cell_coms = new SerialPort(load_port, baudrate);
@@ -234,7 +240,11 @@ namespace PULSR_3
                 load_cell_coms.DiscardInBuffer();
                 load_cell_coms.DiscardOutBuffer();
                 load_cell_coms.Write(new byte[] { (byte)wanted_load_cell }, 0, 1);
-                force_data = new byte[4];
+                Thread.Sleep(50);
+                if (force_data == null || force_data.Length != 4)
+                {
+                    force_data = new byte[4];
+                }
                 load_cell_coms.Read(force_data, 0, 4);
             }
         }
@@ -251,7 +261,11 @@ namespace PULSR_3
                 encoder_coms.DiscardInBuffer();
                 encoder_coms.DiscardOutBuffer();
                 encoder_coms.Write(new byte[] { 0 }, 0, 1);
-                motor_data = new byte[5];
+                Thread.Sleep(50);
+                if (motor_data == null || motor_data.Length != 5)
+                {
+                    motor_data = new byte[5];
+                }
                 encoder_coms.Read(motor_data, 0, 5);
             }
         }
@@ -266,11 +280,18 @@ namespace PULSR_3
             else
             {
                 encoder_coms.Write(new byte[] { 255 }, 0, 1);
-                motor_data = new byte[5];
+                Thread.Sleep(50);
+                if (motor_data == null || motor_data.Length != 5)
+                {
+                    motor_data = new byte[5];
+                }
                 encoder_coms.Read(motor_data, 0, 5);
             }
         }
-        // /// Modes /// //
+
+        /// <summary>
+        /// MODES
+        /// </summary>
         public void ComputerMode()
         {
             control_data &= 63;
@@ -294,7 +315,10 @@ namespace PULSR_3
             control_data |= 64;
             SendCommand();
         }
-        /// /// PULSR Sensor Data Updates /// /// 
+
+        /// <summary>
+        /// PULSR SENSOR DATA UPDATES
+        /// </summary> 
         public int UpdateUpperLoadCell()
         {
             wanted_load_cell = 1;
@@ -302,6 +326,7 @@ namespace PULSR_3
             int h = (force_data[1] << 2) | (force_data[2] >> 3);
             int l = (force_data[2] << 5) | (force_data[3]);
             upper.link_force = (h << 8) + l;
+            //Console.WriteLine(upper.link_force);
             return upper.link_force;
         }
 
@@ -312,6 +337,7 @@ namespace PULSR_3
             int h = (force_data[1] << 2) | (force_data[2] >> 3);
             int l = (force_data[2] << 5) | (force_data[3]);
             lower.link_force = (h << 8) + l;
+            //Console.WriteLine(lower.link_force);
             return lower.link_force;
         }
 
@@ -330,11 +356,12 @@ namespace PULSR_3
             Console.WriteLine("angles: " + upper.angle + ", " + lower.angle);
             Console.WriteLine("force: " + upper.link_force + ", " + lower.link_force);
         }
-        // /// Motor Commands /// //
+
+        /// <summary>
+        /// MOTOR COMMANDS
+        /// </summary>
         public void SetMotorDirections(bool front, bool back, bool left, bool right)
         {
-            //upper.target_speed = front ? Math.Abs(upper.target_speed) : -Math.Abs(upper.target_speed);
-            //lower.target_speed = back ? Math.Abs(lower.target_speed) : -Math.Abs(lower.target_speed);
             this.front = front;
             this.back = back;
             this.left = left;
@@ -447,9 +474,15 @@ namespace PULSR_3
                 LowerMotorCCW(0, lower_target);
             }
         }
-        // /// Kinematics Definitions /// //
+
+        /// <summary>
+        /// KINEMATICS DEFINITIONS
+        /// </summary>
         public void DefineGeometry(int ll, int lu, int le)
         {
+            /// ll : lower link length
+            /// lu : upper link length
+            /// le : distance between end effector and parallel links intersection
             this.ll = ll;
             this.lu = lu;
             this.le = le;
@@ -461,16 +494,16 @@ namespace PULSR_3
             int u = upper_link_angle;
             int l = lower_link_angle;
             int f_l_u = 180 - l_u;
-            int ll = this.ll;
-            int lu = this.lu;
-            int le = this.le;
-            int ln = this.ll + this.le;
+            //int ll = this.ll    
+            //int lu = this.lu;
+            //int le = this.le;
+            int ln = ll + le;
             int alpha = (180 - f_l_u) / 2;
             int m = (int)Math.Sqrt((lu * lu) + (ll * ll) - (2 * lu * ll * Math.Cos(f_l_u)));
             int k = (int)Math.Sqrt((m * m) + (le * le) - (2 * m * le * Math.Cos(alpha + f_l_u)));
             int beta = (int)Math.Asin((le * Math.Sin(alpha + f_l_u)) / k);
-            int e1 = (int)(k * Math.Cos(beta + alpha + u));
-            int e2 = (int)(k * Math.Sin(beta + alpha + u));
+            e1 = (int)(k * Math.Cos(beta + alpha + u));
+            e2 = (int)(k * Math.Sin(beta + alpha + u));
             return new int[] { e2, e1 };
         }
 
@@ -488,7 +521,6 @@ namespace PULSR_3
         {
             UpdateMotorAngles();
             ForwardKinematics(upper.angle, lower.angle);
-            //return ComputeXY();
             return new int[] { e2, e1 };
         }
 

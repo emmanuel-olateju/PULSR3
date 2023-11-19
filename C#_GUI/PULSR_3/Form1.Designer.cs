@@ -41,11 +41,11 @@
             this.label3 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.button2 = new System.Windows.Forms.Button();
             this.panel11 = new System.Windows.Forms.Panel();
             this.label9 = new System.Windows.Forms.Label();
             this.panel10 = new System.Windows.Forms.Panel();
             this.label8 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -56,7 +56,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.panel6 = new System.Windows.Forms.Panel();
-            this.panel12 = new System.Windows.Forms.Panel();
+            this.orbitPanel = new System.Windows.Forms.Panel();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
@@ -167,7 +167,7 @@
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(81)))), ((int)(((byte)(57)))), ((int)(((byte)(212)))));
             this.label1.Location = new System.Drawing.Point(38, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(117, 39);
+            this.label1.Size = new System.Drawing.Size(161, 39);
             this.label1.TabIndex = 4;
             this.label1.Text = "PULSR_3";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -245,6 +245,22 @@
             this.panel3.Size = new System.Drawing.Size(180, 250);
             this.panel3.TabIndex = 2;
             // 
+            // button2
+            // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(29)))), ((int)(((byte)(66)))));
+            this.button2.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(29)))), ((int)(((byte)(66)))));
+            this.button2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(29)))), ((int)(((byte)(66)))));
+            this.button2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(29)))), ((int)(((byte)(66)))));
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Font = new System.Drawing.Font("Plus Jakarta Sans ExtraBold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.button2.Location = new System.Drawing.Point(31, 138);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(123, 39);
+            this.button2.TabIndex = 11;
+            this.button2.UseVisualStyleBackColor = false;
+            // 
             // panel11
             // 
             this.panel11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
@@ -310,22 +326,6 @@
             this.label8.MouseClick += new System.Windows.Forms.MouseEventHandler(this.increaseClick);
             this.label8.MouseEnter += new System.EventHandler(this.increaseMouseEnter);
             this.label8.MouseLeave += new System.EventHandler(this.increaseMouseLeave);
-            // 
-            // button2
-            // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(29)))), ((int)(((byte)(66)))));
-            this.button2.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(29)))), ((int)(((byte)(66)))));
-            this.button2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(29)))), ((int)(((byte)(66)))));
-            this.button2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(29)))), ((int)(((byte)(66)))));
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Plus Jakarta Sans ExtraBold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button2.Location = new System.Drawing.Point(31, 138);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(123, 39);
-            this.button2.TabIndex = 11;
-            this.button2.UseVisualStyleBackColor = false;
             // 
             // label5
             // 
@@ -474,19 +474,19 @@
             this.panel6.Size = new System.Drawing.Size(176, 12);
             this.panel6.TabIndex = 4;
             // 
-            // panel12
+            // orbitPanel
             // 
-            this.panel12.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.orbitPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel12.BackColor = System.Drawing.Color.Transparent;
-            this.panel12.BackgroundImage = global::PULSR_3.Properties.Resources.orbitalPanel;
-            this.panel12.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.panel12.Location = new System.Drawing.Point(195, 38);
-            this.panel12.Name = "panel12";
-            this.panel12.Size = new System.Drawing.Size(634, 711);
-            this.panel12.TabIndex = 4;
-            this.panel12.Paint += new System.Windows.Forms.PaintEventHandler(this.panel12_Paint);
+            this.orbitPanel.BackColor = System.Drawing.Color.Transparent;
+            this.orbitPanel.BackgroundImage = global::PULSR_3.Properties.Resources.orbitalPanel;
+            this.orbitPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.orbitPanel.Location = new System.Drawing.Point(195, 38);
+            this.orbitPanel.Name = "orbitPanel";
+            this.orbitPanel.Size = new System.Drawing.Size(634, 711);
+            this.orbitPanel.TabIndex = 4;
+            this.orbitPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.orbitPanelPaint);
             // 
             // timer
             // 
@@ -499,7 +499,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(29)))), ((int)(((byte)(66)))));
             this.ClientSize = new System.Drawing.Size(1024, 749);
-            this.Controls.Add(this.panel12);
+            this.Controls.Add(this.orbitPanel);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
@@ -566,7 +566,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Panel panel12;
+        private System.Windows.Forms.Panel orbitPanel;
         private System.Windows.Forms.Timer timer;
     }
 }

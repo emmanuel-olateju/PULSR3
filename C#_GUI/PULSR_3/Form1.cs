@@ -129,7 +129,7 @@ namespace PULSR_3
                 //button1.ForeColor = Color.White;
                 //angle = 0;
             }
-            panel12.Invalidate(); // Trigger a redraw of the panel
+            orbitPanel.Invalidate(); // Trigger a redraw of the panel
 
             //// Calculate and display the coordinates
             //float centerX = panel12.Width / 2;
@@ -237,11 +237,11 @@ namespace PULSR_3
             }
         }
         ///////// Orbiting Circle /////////////
-        private void panel12_Paint(object sender, PaintEventArgs e)
+        private void orbitPanelPaint(object sender, PaintEventArgs e)
         {
             Pen largeCirclePen = new Pen(Color.FromArgb(0xB0, 0x80, 0x2E), 5.0f);
-            float centerX = panel12.Width / 2;
-            float centerY = panel12.Height / 2;
+            float centerX = orbitPanel.Width / 2;
+            float centerY = orbitPanel.Height / 2;
             //float orbitingX = centerX + (float)(orbitRadius * Math.Cos(angle)) - centerOffset;
             //float orbitingY = centerY + (float)(orbitRadius * Math.Sin(angle));
 
@@ -329,5 +329,7 @@ namespace PULSR_3
 
 
         }
+
+        
     }
 }
