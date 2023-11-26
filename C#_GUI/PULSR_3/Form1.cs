@@ -16,8 +16,14 @@ namespace PULSR_3
 {
     public partial class Form1 : Form
     {
+        /// <summary>
+        /// INITIALIZE PULSR
+        /// </summary>
+        
         pulsr pulsr3 = new pulsr();
 
+        //public int value { get; set; }
+        public int value; 
 
         public int old_y;
         public int old_x;
@@ -43,11 +49,14 @@ namespace PULSR_3
         private int cycleCount = 0;
         public Form1()
         {
+            // COMMUNICATION INITIALIZATION AND DEFINITION //
             pulsr3.InitializeCommunication();
             //Thread.Sleep(500);
+
+            // COMMUNICATION CHECK //
             if (pulsr3.CheckCommunication())
             {
-                Console.WriteLine("Communication Port is Active");
+                Console.WriteLine("Communication Port is Active"); /// change to dialog
 
                 InitializeComponent();
             }
@@ -71,8 +80,9 @@ namespace PULSR_3
                 }
                 Close();
             }
+
             //// Game level selection ////
-            int value = 0;   /////key metric
+            //public int value { get; set;}   /////key metric
             if (InputBox("GAME LEVEL", "Select a Level!", ref value) == DialogResult.OK)
             {
                 if (value == 0)
@@ -87,13 +97,18 @@ namespace PULSR_3
                 {
                     MessageBox.Show("Active Mode");
                 }
+                else
+                {
+                    MessageBox.Show("Please Select a Mode");
+
+                }
             }
 
-            //RESET ANGLE PARAMETERS AND DISABLE MOTORS
+            // RESET ANGLE PARAMETERS AND DISABLE MOTORS //
             pulsr3.UpdateMotorSpeed(0, 0);
             pulsr3.ResetAngles();
 
-            //PULSR KINEMATICS PARAMETERS DEFINITIION AND INITIALIZATION
+            // PULSR KINEMATICS PARAMETERS DEFINITIION AND INITIALIZATION //
             pulsr3.DefineGeometry(26, 26, 26);
             pulsr3.SetOrigin(20);
 
@@ -109,6 +124,12 @@ namespace PULSR_3
             //timer.Start();
         }
 
+
+        /// <summary>
+        /// MAIN GUI
+        /// </summary>
+   
+        // GUI INITIALIZATION //
         private void Form1_Load(object sender, EventArgs e)
         {
             //timer.Start();    //commentend not to start when the form loads, the start button controls it now
@@ -279,10 +300,12 @@ namespace PULSR_3
             old_x = new_x;
             old_y = new_y;
             pulsr3.ReturnXYCoordinate();
-            new_x = xOffset - pulsr3.x;
-            new_y = pulsr3.y - yOffset;
+            //new_x = xOffset - pulsr3.x; 
+            //new_y = pulsr3.y - yOffset;
+            new_x = pulsr3.x + 306;
+            new_y = pulsr3.y + 95;
             e.Graphics.FillRectangle(Brushes.Blue, new_x, new_y, rectWidth, rectHeight);
-
+            Console.WriteLine("End effector Coordinates: X = {0}, Y = {1}", new_x, new_y);
 
         }
 
