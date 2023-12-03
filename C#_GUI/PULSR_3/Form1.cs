@@ -296,14 +296,18 @@ namespace PULSR_3
             //float rectY = centerY - orbitingCircleRadius - rectHeight;
             //e.Graphics.FillRectangle(Brushes.Blue, rectX, rectY, rectWidth, rectHeight);
             //e.Graphics.FillRectangle(Brushes.Blue, 57, 345, rectWidth, rectHeight);
+
             /// update effector coordinate to give new effector coordinates ///
             old_x = new_x;
             old_y = new_y;
+
             pulsr3.ReturnXYCoordinate();
+            //pulsr3.ComputeXY();
+
             //new_x = xOffset - pulsr3.x; 
             //new_y = pulsr3.y - yOffset;
-            new_x = pulsr3.x + 306;
-            new_y = pulsr3.y + 95;
+            new_x = pulsr3.x; // + 306;
+            new_y = pulsr3.y; // + 95;
             e.Graphics.FillRectangle(Brushes.Blue, new_x, new_y, rectWidth, rectHeight);
             Console.WriteLine("End effector Coordinates: X = {0}, Y = {1}", new_x, new_y);
 

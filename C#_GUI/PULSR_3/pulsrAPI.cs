@@ -43,16 +43,16 @@ namespace PULSR_3
         public Motor lower;
 
         ////// KINEMATICS PARAMETERS  ///////
-        public int ll;
-        public int lu;
-        public int le;
-        public int e1;
-        public int e2;
+        public double ll;
+        public double lu;
+        public double le;
+        public double e1;
+        public double e2;
         public int xi;
         public int yi;
         public int x;
         public int y;
-        public int offset_angle;
+        public double offset_angle;
 
         public SerialPort load_cell_coms;
         public SerialPort encoder_coms;
@@ -81,9 +81,9 @@ namespace PULSR_3
             lower = new Motor();
 
             ////// KINEMATICS PARAMETERS INITIALIZATION ///////
-            ll = 0;
-            lu = 0;
-            le = 0;
+            ll = 26;
+            lu = 26;
+            le = 26;
             e1 = 0;
             e2 = 0;
             xi = 0;
@@ -346,6 +346,8 @@ namespace PULSR_3
             UpdateAngles();
             upper.angle = (motor_data[1] << (8)) + motor_data[2];
             lower.angle = (motor_data[3] << 8) + motor_data[4];
+            // remove later //
+            Console.WriteLine("angles: " + upper.angle + ", " + lower.angle);
         }
 
         public void UpdateSensorData()
@@ -488,23 +490,38 @@ namespace PULSR_3
             this.le = le;
         }
 
-        public int[] ForwardKinematics(int upper_link_angle, int lower_link_angle)
+        public double[] ForwardKinematics(double upper_link_angle, double lower_link_angle)
         {
-            int l_u = lower_link_angle - upper_link_angle;
-            int u = upper_link_angle;
-            int l = lower_link_angle;
-            int f_l_u = 180 - l_u;
+            double l_u = lower_link_angle - upper_link_angle;
+            double u = upper_link_angle;
+            double l = lower_link_angle;
+            double f_l_u = 180 - l_u;
             //int ll = this.ll    
             //int lu = this.lu;
             //int le = this.le;
-            int ln = ll + le;
-            int alpha = (180 - f_l_u) / 2;
-            int m = (int)Math.Sqrt((lu * lu) + (ll * ll) - (2 * lu * ll * Math.Cos(f_l_u)));
-            int k = (int)Math.Sqrt((m * m) + (le * le) - (2 * m * le * Math.Cos(alpha + f_l_u)));
-            int beta = (int)Math.Asin((le * Math.Sin(alpha + f_l_u)) / k);
-            e1 = (int)(k * Math.Cos(beta + alpha + u));
-            e2 = (int)(k * Math.Sin(beta + alpha + u));
-            return new int[] { e2, e1 };
+            double ln = ll + le;
+            double alpha = (180 - f_l_u) / 2;
+
+            //int m = (int)Math.Sqrt((lu * lu) + (ll * ll) - (2 * lu * ll * Math.Cos(f_l_u)));
+            //int k = (int)Math.Sqrt((m * m) + (le * le) - (2 * m * le * Math.Cos(alpha + f_l_u)));
+            //int beta = (int)Math.Asin((le * Math.Sin(alpha + f_l_u)) / k);
+            double m = (double)Math.Sqrt(Math.Pow(lu, 2) + Math.Pow(ll, 2) - 2 * lu * ll * Math.Cos(DegreeToRadian(f_l_u)));
+            double k = (double)Math.Sqrt(Math.Pow(m, 2) + Math.Pow(le, 2) - 2 * m * le * Math.Cos(DegreeToRadian(alpha + f_l_u)));
+            double beta = RadianToDegree((double)Math.Asin((le * Math.Sin(DegreeToRadian(alpha + f_l_u))) / k));
+
+            e2 = (double)(k * Math.Cos(DegreeToRadian(beta + alpha + u)));
+            e1 = (double)(k * Math.Sin(DegreeToRadian(beta + alpha + u)));
+            return new double[] { e2, e1 };
+        }
+
+        // Helper functions to convert between degrees and radians //
+        double DegreeToRadian(double angle)
+        {
+            return (Math.PI * angle / 180.0);
+        }
+        double RadianToDegree(double angle)
+        {
+            return (angle * (180.0 / Math.PI));
         }
 
         public void SetOrigin(int offset_angle)
@@ -517,18 +534,18 @@ namespace PULSR_3
             y = coordinates[0] - yi;
         }
 
-        public int[] ComputePulsrCoordinates()
+        public double[] ComputePulsrCoordinates()
         {
             UpdateMotorAngles();
             ForwardKinematics(upper.angle, lower.angle);
-            return new int[] { e2, e1 };
+            return new double[] { e2, e1 };
         }
 
         public int[] ComputeXY()
         {
             ComputePulsrCoordinates();
-            int y = (int)(-(e2 * Math.Cos(offset_angle)) - (e1 * Math.Sin(offset_angle)));
-            int x = (int)((e1 * Math.Cos(offset_angle)) - (e2 * Math.Sin(offset_angle)));
+            int y = (int)(-(e2 * Math.Cos(DegreeToRadian(offset_angle))) - (e1 * Math.Sin(DegreeToRadian(offset_angle))));
+            int x = (int)((e1 * Math.Cos(DegreeToRadian(offset_angle))) - (e2 * Math.Sin(DegreeToRadian(offset_angle))));
             //y = glass_to_screen_scaler * y;
             //x = glass_to_screen_scaler * x;
             return new int[] { y, x };
@@ -537,8 +554,12 @@ namespace PULSR_3
         public int[] ReturnXYCoordinate()
         {
             int[] coordinates = ComputeXY();
-            x = coordinates[1] - xi;
-            y = coordinates[0] - yi;
+            //x = coordinates[1] - xi; 
+            //y = coordinates[0] - yi;
+            //return new int[] { y, x };
+
+            x = coordinates[1]; //minus gui offset 
+            y = coordinates[0]; //add gui offset
             return new int[] { y, x };
         }
 
