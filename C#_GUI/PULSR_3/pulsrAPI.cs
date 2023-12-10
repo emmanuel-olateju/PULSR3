@@ -90,7 +90,7 @@ namespace PULSR_3
             yi = 0;
             x = 0;
             y = 0;
-            offset_angle = 0;
+            offset_angle = 20;
 
             /// Read the USB serial numbers from a file ///
             string usbSerialNos;
@@ -480,7 +480,7 @@ namespace PULSR_3
         /// <summary>
         /// KINEMATICS DEFINITIONS
         /// </summary>
-        public void DefineGeometry(int ll, int lu, int le)
+        public void DefineGeometry(double ll, double lu, double le)
         {
             /// ll : lower link length
             /// lu : upper link length
@@ -505,12 +505,16 @@ namespace PULSR_3
             //int m = (int)Math.Sqrt((lu * lu) + (ll * ll) - (2 * lu * ll * Math.Cos(f_l_u)));
             //int k = (int)Math.Sqrt((m * m) + (le * le) - (2 * m * le * Math.Cos(alpha + f_l_u)));
             //int beta = (int)Math.Asin((le * Math.Sin(alpha + f_l_u)) / k);
-            double m = (double)Math.Sqrt(Math.Pow(lu, 2) + Math.Pow(ll, 2) - 2 * lu * ll * Math.Cos(DegreeToRadian(f_l_u)));
+            /*double m = (double)Math.Sqrt(Math.Pow(lu, 2) + Math.Pow(ll, 2) - 2 * lu * ll * Math.Cos(DegreeToRadian(f_l_u)));
             double k = (double)Math.Sqrt(Math.Pow(m, 2) + Math.Pow(le, 2) - 2 * m * le * Math.Cos(DegreeToRadian(alpha + f_l_u)));
             double beta = RadianToDegree((double)Math.Asin((le * Math.Sin(DegreeToRadian(alpha + f_l_u))) / k));
 
             e2 = (double)(k * Math.Cos(DegreeToRadian(beta + alpha + u)));
-            e1 = (double)(k * Math.Sin(DegreeToRadian(beta + alpha + u)));
+            e1 = (double)(k * Math.Sin(DegreeToRadian(beta + alpha + u))); */
+
+            e2 = (double)((lu * Math.Cos(DegreeToRadian(u))) + (ln * Math.Cos(DegreeToRadian(l))));
+            e1 = (double)((lu * Math.Sin(DegreeToRadian(u))) + (ln * Math.Sin(DegreeToRadian(l))));
+
             return new double[] { e2, e1 };
         }
 
@@ -524,14 +528,14 @@ namespace PULSR_3
             return (angle * (180.0 / Math.PI));
         }
 
-        public void SetOrigin(int offset_angle)
+        public void SetOrigin(double offset_angle)
         {
             this.offset_angle = offset_angle;
             int[] coordinates = ComputeXY();
             xi = coordinates[1];
             yi = coordinates[0];
-            x = coordinates[1] - xi;
-            y = coordinates[0] - yi;
+            this.x = coordinates[1] - xi;
+            this.y = coordinates[0] - yi;
         }
 
         public double[] ComputePulsrCoordinates()
@@ -544,10 +548,20 @@ namespace PULSR_3
         public int[] ComputeXY()
         {
             ComputePulsrCoordinates();
-            int y = (int)(-(e2 * Math.Cos(DegreeToRadian(offset_angle))) - (e1 * Math.Sin(DegreeToRadian(offset_angle))));
-            int x = (int)((e1 * Math.Cos(DegreeToRadian(offset_angle))) - (e2 * Math.Sin(DegreeToRadian(offset_angle))));
+            //int y = (int)(-(e2 * Math.Cos(DegreeToRadian(offset_angle))) - (e1 * Math.Sin(DegreeToRadian(offset_angle))));
+            //int x = (int)((e1 * Math.Cos(DegreeToRadian(offset_angle))) - (e2 * Math.Sin(DegreeToRadian(offset_angle))));
             //y = glass_to_screen_scaler * y;
             //x = glass_to_screen_scaler * x;
+
+             //x = (int)e1;
+             //y = (int)e2;
+
+            y = (int)(-(e2 * Math.Cos(DegreeToRadian(20))) - (e1 * Math.Sin(DegreeToRadian(20))));
+            x = (int)((e1 * Math.Cos(DegreeToRadian(20))) - (e2 * Math.Sin(DegreeToRadian(20))));
+
+            y = y * 20;
+            x = x * 20;
+
             return new int[] { y, x };
         }
 
@@ -558,8 +572,8 @@ namespace PULSR_3
             //y = coordinates[0] - yi;
             //return new int[] { y, x };
 
-            x = coordinates[1]; //minus gui offset 
-            y = coordinates[0]; //add gui offset
+            x = coordinates[1] - xi; //minus gui offset 
+            y = coordinates[0] - yi; //add gui offset
             return new int[] { y, x };
         }
 

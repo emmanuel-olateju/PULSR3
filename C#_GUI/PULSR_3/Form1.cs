@@ -28,9 +28,11 @@ namespace PULSR_3
         public int old_y;
         public int old_x;
         public int new_y;
+        private float current_x;
+        private float current_y;
         public int new_x;
-        public int yOffset = 0;
-        public int xOffset = 17;
+        public int yOffset = 38;
+        public int xOffset = 195;
 
         int levelStart = 0;
         int cycle = 0;
@@ -112,9 +114,9 @@ namespace PULSR_3
             pulsr3.DefineGeometry(26, 26, 26);
             pulsr3.SetOrigin(20);
 
-            int[] new_yx = pulsr3.ReturnXYCoordinate();
-            old_y = new_yx[0];
-            old_x = new_yx[1];
+            //int[] new_yx = pulsr3.ReturnXYCoordinate();
+            //old_y = new_yx[0];
+            //old_x = new_yx[1];
 
 
 
@@ -287,7 +289,7 @@ namespace PULSR_3
             e.Graphics.FillEllipse(Brushes.Green, smallCircleXPos, smallCircleYPos, smallCircleDiameter, smallCircleDiameter);
 
             /// Display the coordinates in the terminal ///
-            Console.WriteLine("Small Orbiting Circle Coordinates: X = {0}, Y = {1}", smallCircleXPos, smallCircleYPos);
+            //Console.WriteLine("Small Orbiting Circle Coordinates: X = {0}, Y = {1}", smallCircleXPos, smallCircleYPos);
 
             ///// Draw the small rectangle connected to end effector  /////
             float rectWidth = 20;
@@ -298,18 +300,25 @@ namespace PULSR_3
             //e.Graphics.FillRectangle(Brushes.Blue, 57, 345, rectWidth, rectHeight);
 
             /// update effector coordinate to give new effector coordinates ///
-            old_x = new_x;
-            old_y = new_y;
+            //old_x = new_x;
+            //old_y = new_y;
 
             pulsr3.ReturnXYCoordinate();
             //pulsr3.ComputeXY();
 
-            //new_x = xOffset - pulsr3.x; 
-            //new_y = pulsr3.y - yOffset;
-            new_x = pulsr3.x; // + 306;
-            new_y = pulsr3.y; // + 95;
-            e.Graphics.FillRectangle(Brushes.Blue, new_x, new_y, rectWidth, rectHeight);
-            Console.WriteLine("End effector Coordinates: X = {0}, Y = {1}", new_x, new_y);
+            new_x = (xOffset - pulsr3.x); 
+            new_y = (pulsr3.y - yOffset);
+
+            //new_x = pulsr3.x; // + 306;
+            //new_y = pulsr3.y; // + 95;
+
+            current_x = centerX - new_x;
+            current_y = centerY + new_y;
+             
+            e.Graphics.FillRectangle(Brushes.Blue, current_y, current_x, rectWidth, rectHeight);
+
+            Console.WriteLine("End effector : X = {0}, Y = {1}", new_x, new_y);
+            Console.WriteLine("End effector Coordinates: X = {0}, Y = {1}", current_x, current_y);
 
         }
 
