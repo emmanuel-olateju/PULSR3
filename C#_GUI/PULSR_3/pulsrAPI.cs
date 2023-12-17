@@ -559,8 +559,8 @@ namespace PULSR_3
             y = (int)(-(e2 * Math.Cos(DegreeToRadian(20))) - (e1 * Math.Sin(DegreeToRadian(20))));
             x = (int)((e1 * Math.Cos(DegreeToRadian(20))) - (e2 * Math.Sin(DegreeToRadian(20))));
 
-            y = y * 20;
-            x = x * 20;
+            y = y * 25;
+            x = x * 25;
 
             return new int[] { y, x };
         }
